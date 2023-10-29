@@ -1,2 +1,2 @@
-# rapidPlugin_template
-rapidPlugin template to help create plugins for the rapidRTOS framework
+# rapidPlugin_stream
+rapidPlugin stream handler for the rapidRTOS framework

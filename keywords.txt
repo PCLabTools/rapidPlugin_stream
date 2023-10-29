@@ -6,7 +6,7 @@
 # Class (KEYWORD1)
 #######################################
 
-rapidplugin_template  KEYWORD1
+rapidPlugin_stream  KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -16,9 +16,26 @@ run KEYWORD2
 runCore KEYWORD2
 stop  KEYWORD2
 cmd KEYWORD2
+available KEYWORD2
+read  KEYWORD2
+peek  KEYWORD2
+flush KEYWORD2
+write KEYWORD2
+print KEYWORD2
+println KEYWORD2
+printf  KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
 
-rapidPlugin_template_h  LITERAL1
+rapidPlugin_stream_h  LITERAL1
+_pID  LITERAL1
+_iID  LITERAL1
+_taskHandle LITERAL1
+_interfaceHandle  LITERAL1
+_taskQueue  LITERAL1
+_taskResponse LITERAL1
+_txQueue  LITERAL1
+_rxQueue  LITERAL1
+_streamRef  LITERAL1
