@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Class (KEYWORD1)
+#######################################
+
+rapidplugin_template  KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+run KEYWORD2
+runCore KEYWORD2
+stop  KEYWORD2
+cmd KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+rapidPlugin_template_h  LITERAL1
