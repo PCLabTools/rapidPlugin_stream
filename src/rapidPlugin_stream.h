@@ -84,15 +84,30 @@ rapidPlugin_stream::~rapidPlugin_stream()
  */
 BaseType_t rapidPlugin_stream::run()
 {
+  uint32_t stackDepth = rapidRTOS_DEFAULT_STACK_SIZE;
+  uint32_t interfaceDepth = 512;
+  #ifdef BOARD_ESP32
+  stackDepth = stackDepth * 4;
+  interfaceDepth = interfaceDepth * 4;
+  #endif
   sprintf(_iID, "i_%s", _pID);
   if (!rapidRTOS.getTaskHandle(_pID))
   {
     _taskQueue = xQueueCreate(1, sizeof(const char*));
     _taskResponse = xQueueCreate(1, sizeof(const char*));
-    if(xTaskCreate(&main_loop, _pID, rapidRTOS_DEFAULT_STACK_SIZE, this, 1, &_taskHandle)\
-    && xTaskCreate(&interface_loop, _iID, 512, this, 1, &_interfaceHandle))\
-    return (BaseType_t)rapidRTOS.reg(_taskHandle, &_taskQueue, &_taskResponse);
-    else return 0;
+    if(xTaskCreate(&main_loop, _pID, stackDepth, this, 1, &_taskHandle)\
+    && xTaskCreate(&interface_loop, _iID, interfaceDepth, this, 1, &_interfaceHandle))\
+    return (BaseType_t)rapidRTOS.reg(_taskHandle, _pID, &_taskQueue, &_taskResponse);
+    else
+    {
+      vTaskDelete(_taskHandle);
+      _taskHandle = NULL;
+      vQueueDelete(_taskQueue);
+      _taskQueue = NULL;
+      vQueueDelete(_taskResponse);
+      _taskResponse = NULL;
+      return 0;
+    }
   }
   return 0;
 }
@@ -106,15 +121,44 @@ BaseType_t rapidPlugin_stream::run()
  */
 BaseType_t rapidPlugin_stream::runCore(UBaseType_t core)
 {
+  uint32_t stackDepth = rapidRTOS_DEFAULT_STACK_SIZE;
+  uint32_t interfaceDepth = 512;
+  #ifdef BOARD_ESP32
+  stackDepth = stackDepth * 4;
+  interfaceDepth = interfaceDepth * 4;
+  #endif
   sprintf(_iID, "i_%s", _pID);
   if (!rapidRTOS.getTaskHandle(_pID))
   {
     _taskQueue = xQueueCreate(1, sizeof(const char*));
     _taskResponse = xQueueCreate(1, sizeof(const char*));
-    if(xTaskCreateAffinitySet(&main_loop, _pID, rapidRTOS_DEFAULT_STACK_SIZE, this, 1, core, &_taskHandle)\
-    && xTaskCreateAffinitySet(&interface_loop, _iID, 512, this, 1, core, &_interfaceHandle))\
-    return (BaseType_t)rapidRTOS.reg(_taskHandle, &_taskQueue, &_taskResponse);
-    else return 0;
+    #ifdef BOARD_ESP32
+    if(xTaskCreatePinnedToCore(&main_loop, _pID, stackDepth, this, 1, &_taskHandle, core)\
+    && xTaskCreatePinnedToCore(&interface_loop, _iID, interfaceDepth, this, 1, &_interfaceHandle, core))\
+    return (BaseType_t)rapidRTOS.reg(_taskHandle, _pID, &_taskQueue, &_taskResponse);
+    #elif BOARD_TEENSY
+    if(xTaskCreate(&main_loop, _pID, stackDepth, this, 1, &_taskHandle)\
+    && xTaskCreate(&interface_loop, _iID, interfaceDepth, this, 1, &_interfaceHandle))\
+    return (BaseType_t)rapidRTOS.reg(_taskHandle, _pID, &_taskQueue, &_taskResponse);
+    #elif BOARD_STM32
+    if(xTaskCreate(&main_loop, _pID, stackDepth, this, 1, &_taskHandle)\
+    && xTaskCreate(&interface_loop, _iID, interfaceDepth, this, 1, &_interfaceHandle))\
+    return (BaseType_t)rapidRTOS.reg(_taskHandle, _pID, &_taskQueue, &_taskResponse);
+    #else
+    if(xTaskCreateAffinitySet(&main_loop, _pID, stackDepth, this, 1, core, &_taskHandle)\
+    && xTaskCreateAffinitySet(&interface_loop, _iID, interfaceDepth, this, 1, core, &_interfaceHandle))\
+    return (BaseType_t)rapidRTOS.reg(_taskHandle, _pID, &_taskQueue, &_taskResponse);
+    #endif
+    else
+    {
+      vTaskDelete(_taskHandle);
+      _taskHandle = NULL;
+      vQueueDelete(_taskQueue);
+      _taskQueue = NULL;
+      vQueueDelete(_taskResponse);
+      _taskResponse = NULL;
+    return 0;
+    }
   }
   return 0;
 }
@@ -332,4 +376,4 @@ const char* rapidPlugin_stream::cmd(const char* command, TickType_t timeout)
   return response;
 }
 
-#endif
+#endif // rapidPlugin_stream_h

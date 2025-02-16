@@ -1,6 +1,6 @@
 {
   "name": "rapidPlugin_stream",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "rapidPlugin for the rapidRTOS framework",
   "keywords": "rapidRTOS, FreeRTOS, RTOS, rapid, arduino",
   "repository":
@@ -20,6 +20,10 @@
       "maintainer": true
     }
   ],
+  "build": 
+  {
+      "extraScript": "scripts/build.py"
+  },
   "license": "GNU",
   "homepage": "https://github.com/PCLabTools/rapidPlugin_stream",
   "frameworks": "arduino",
