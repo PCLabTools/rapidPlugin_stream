@@ -12,6 +12,14 @@
 #ifndef rapidPlugin_stream_h
 #define rapidPlugin_stream_h
 
+#ifndef rapidPlugin_stream_stack_size
+#define rapidPlugin_stream_stack_size 128
+#endif
+
+#ifndef rapidPlugin_stream_interface_stack_size
+#define rapidPlugin_stream_interface_stack_size 512
+#endif
+
 #include "rapidRTOS.h"
 
 /**
@@ -84,8 +92,8 @@ rapidPlugin_stream::~rapidPlugin_stream()
  */
 BaseType_t rapidPlugin_stream::run()
 {
-  uint32_t stackDepth = rapidRTOS_DEFAULT_STACK_SIZE;
-  uint32_t interfaceDepth = 512;
+  uint32_t stackDepth = rapidPlugin_stream_stack_size;
+  uint32_t interfaceDepth = rapidPlugin_stream_interface_stack_size;
   #ifdef BOARD_ESP32
   stackDepth = stackDepth * 4;
   interfaceDepth = interfaceDepth * 4;
@@ -121,8 +129,8 @@ BaseType_t rapidPlugin_stream::run()
  */
 BaseType_t rapidPlugin_stream::runCore(UBaseType_t core)
 {
-  uint32_t stackDepth = rapidRTOS_DEFAULT_STACK_SIZE;
-  uint32_t interfaceDepth = 512;
+  uint32_t stackDepth = rapidPlugin_stream_stack_size;
+  uint32_t interfaceDepth = rapidPlugin_stream_interface_stack_size;
   #ifdef BOARD_ESP32
   stackDepth = stackDepth * 4;
   interfaceDepth = interfaceDepth * 4;

@@ -39,3 +39,5 @@ _taskResponse LITERAL1
 _txQueue  LITERAL1
 _rxQueue  LITERAL1
 _streamRef  LITERAL1
+rapidPlugin_stream_stack_size LITERAL1
+rapidPlugin_stream_stack_interface_size LITERAL1
