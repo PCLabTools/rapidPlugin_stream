@@ -20,13 +20,14 @@ header = '''/**
  */
 enum class rapidPluginErrors_t
 {
-  NO_ERROR = 0,             // No error has occured
-  UNKNOWN_ERROR,            // Unknown error is a catch to be used when no other error is applicable
+  NO_ERROR = 0,                     // No error has occured
+  UNKNOWN_ERROR,                    // Unknown error is a catch to be used when no other error is applicable
 '''
 
-custom_errors = '''  // stream ERRORS
-  STREAM_OUT_BUFFER_FULL, // Buffer is full, unable to write
-  STREAM_IN_BUFFER_FULL,  // Buffer is full, unable to read
+custom_errors = '''
+  // stream ERRORS
+  STREAM_OUT_BUFFER_FULL,           // Buffer is full, unable to write
+  STREAM_IN_BUFFER_FULL,            // Buffer is full, unable to read
 '''
 
 footer = '''};
